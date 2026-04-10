@@ -1,18 +1,10 @@
-import { createInterface, Interface } from "readline";
-import { getCommands } from "./CliCommand.js";
+import { State } from "./state.js";
 
 
-export function startREPL()
+export function startRepl(state: State)
 {
-  const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: "Pokedex > ",
-  });
-
-  rl.prompt();
-
-  rl.on("line", (input) => handleLine(rl, input));
+  state.rl.on("line", (input) => handleLine(state, input));
+  state.rl.prompt();
 }
 
 
@@ -22,27 +14,26 @@ export function cleanInput(input: string): string[]
 }
 
 
-function handleLine(rl: Interface, input: string)
+export function handleLine(state: State, input: string)
 {
   const words = cleanInput(input);
   if (words.length <= 0)
   {
-    rl.prompt();
+    state.rl.prompt();
     return;
   }
 
-  const commands = getCommands();
-  const command = commands[words[0]];
+  const command = state.commands[words[0]];
   if (command === undefined)
   {
     console.log("Unknown command");
-    rl.prompt();
+    state.rl.prompt();
     return;
   }
 
   try
   {
-    command.callback(commands);
+    command.callback(state);
   }
   catch (err)
   {
@@ -52,5 +43,5 @@ function handleLine(rl: Interface, input: string)
       console.error(`Unknown error while handling command ${command.name}: ${err}`);
   }
 
-  rl.prompt();
+  state.rl.prompt();
 }

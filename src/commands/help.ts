@@ -1,13 +1,13 @@
-import type { CliCommand } from "../CliCommand.js";
+import type { State } from "src/state.js";
 
 
-export function commandHelp(commands: Record<string, CliCommand>)
+export function commandHelp(state: State)
 {
   let message = "Welcome to the Pokedex!\nUsage:\n\n"; 
 
-  for (const key in commands)
+  for (const key in state.commands)
   {
-    const command = commands[key];
+    const command = state.commands[key];
     message += `${command.name}: ${command.description}\n`;
   }
 

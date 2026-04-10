@@ -1,8 +1,9 @@
-import type { CliCommand } from "../CliCommand.js";
+import type { State } from "src/state.js";
 
 
-export function commandExit(commands: Record<string, CliCommand>)
+export function commandExit(state: State)
 {
   console.log("Closing the Pokedex... Goodbye!");
+  state.rl.close();
   process.exit(0);
 }
