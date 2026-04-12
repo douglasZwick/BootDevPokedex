@@ -3,12 +3,16 @@ import { createInterface, type Interface } from "readline";
 import { commandExit } from "./commands/exit.js";
 import { commandHelp } from "./commands/help.js";
 import { commandMap } from "./commands/map.js";
+import { PokeAPI } from "./pokeapi.js";
 
 
 export type State =
 {
   rl: Interface;
   commands: Record<string, CliCommand>;
+  pokeApi: PokeAPI;
+  nextLocationsURL: string;
+  prevLocationsURL: string;
 };
 
 
