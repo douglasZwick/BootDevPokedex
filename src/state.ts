@@ -1,8 +1,8 @@
 import { createInterface, type Interface } from "readline";
-import { handleLine } from "./repl.js";
 
 import { commandExit } from "./commands/exit.js";
 import { commandHelp } from "./commands/help.js";
+import { commandMap } from "./commands/map.js";
 
 
 export type State =
@@ -46,6 +46,12 @@ export function initState()
       description: "Prints online help",
       callback: commandHelp,
     },
+    map:
+    {
+      name: "map",
+      description: "Fetches a map or something",
+      callback: commandMap,
+    }
   };
 
   return { rl, commands } as State;
