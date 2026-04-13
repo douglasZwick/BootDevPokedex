@@ -58,5 +58,14 @@ export function initState()
     }
   };
 
-  return { rl, commands } as State;
+  const state: State =
+  {
+    rl: rl,
+    commands: commands,
+    pokeApi: new PokeAPI(),
+    nextLocationsURL: "",
+    prevLocationsURL: "",
+  };
+
+  return state;
 }
