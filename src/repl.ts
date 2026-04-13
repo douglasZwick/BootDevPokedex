@@ -1,9 +1,9 @@
 import { State } from "./state.js";
 
 
-export function startRepl(state: State)
+export async function startRepl(state: State)
 {
-  state.rl.on("line", (input) => handleLine(state, input));
+  state.rl.on("line", async (input) => await handleLine(state, input));
   state.rl.prompt();
 }
 
@@ -14,7 +14,7 @@ export function cleanInput(input: string): string[]
 }
 
 
-export function handleLine(state: State, input: string)
+export async function handleLine(state: State, input: string)
 {
   const words = cleanInput(input);
   if (words.length <= 0)
@@ -33,7 +33,7 @@ export function handleLine(state: State, input: string)
 
   try
   {
-    command.callback(state);
+    await command.callback(state);
   }
   catch (err)
   {

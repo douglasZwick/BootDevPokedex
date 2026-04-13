@@ -1,7 +1,7 @@
 import type { State } from "src/state.js";
 
 
-export function commandHelp(state: State)
+export async function commandHelp(state: State)
 {
   let message = "Welcome to the Pokedex!\nUsage:\n\n"; 
 

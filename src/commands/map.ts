@@ -2,7 +2,7 @@ import { PokeAPI } from "../pokeapi.js";
 import { State } from "../state.js";
 
 
-export function commandMap(state: State)
+export async function commandMap(state: State)
 {
   // let message = "";
 
