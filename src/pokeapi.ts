@@ -15,7 +15,7 @@ export class PokeAPI
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
     const jsonLocations = await response.json();
-    return JSON.parse(jsonLocations) as ShallowLocations;
+    return jsonLocations as ShallowLocations;
   }
 
 
@@ -28,106 +28,25 @@ export class PokeAPI
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
     const jsonLocation = await response.json();
-    return JSON.parse(jsonLocation) as Location;
+    return jsonLocation as Location;
   }
+}
+
+
+type UrlString = string;
+
+
+export type Location =
+{
+  name: string;
+  url: UrlString;
 }
 
 
 export type ShallowLocations =
 {
-  locations: Location[];
-};
-
-
-export interface LocationAreaFetchRoot
-{
-  encounter_method_rates: EncounterMethodRate[];
-  game_index: number;
-  id: number;
-  location: Location;
-  name: string;
-  names: Name[];
-  pokemon_encounters: PokemonEncounter[];
-}
-
-
-export interface EncounterMethodRate
-{
-  encounter_method: EncounterMethod;
-  version_details: any[];
-}
-
-
-export interface EncounterMethod {}
-
-
-export interface Location
-{
-  name: string;
-  url: string;
-}
-
-
-export interface Name
-{
-  language: Language;
-  name: string;
-}
-
-
-export interface Language {}
-
-
-export interface PokemonEncounter
-{
-  pokemon: Pokemon;
-  version_details: any[];
-}
-
-
-export interface Pokemon {}
-
-
-export interface LocationFetchRoot
-{
-  areas: Area[];
-  game_indices: Index[];
-  id: number;
-  name: string;
-  names: Name[];
-  region: Region;
-}
-
-
-export interface Area
-{
-  name: string;
-  url: string;
-}
-
-
-export interface Index
-{
-  game_index: number;
-  generation: Generation;
-}
-
-
-export interface Generation {}
-
-
-export interface Name
-{
-  language: Language;
-  name: string;
-}
-
-
-export interface Language {}
-
-
-export interface Region
-{
-  name: string;
-  url: string;
+  count: number;
+  next: UrlString;
+  previous: UrlString;
+  results: Location[];
 }

@@ -6,7 +6,17 @@ export async function commandMap(state: State)
 {
   // let message = "";
 
-  await state.pokeApi.fetchLocation("canalave-city");
+  let location = await state.pokeApi.fetchLocation("canalave-city-area");
+  // message += `${location.results}`
 
-  // console.log(message);
+  printObj(location);
+}
+
+
+function printObj(obj: any): void
+{
+  for (const key in obj)
+  {
+    console.log(`${key} : ${obj[key]}`)
+  }
 }
