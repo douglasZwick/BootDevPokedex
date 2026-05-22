@@ -9,7 +9,7 @@ export class PokeAPI
   async fetchLocations(pageUrl?: string)//: Promise<ShallowLocations>
   {
     const sectionUrl = "/location-area/";
-    const fullUrl = `${PokeAPI.baseUrl}${sectionUrl}${pageUrl ?? ""}`;
+    const fullUrl = pageUrl || `${PokeAPI.baseUrl}${sectionUrl}`;
     
     const response = await fetch(fullUrl);
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
@@ -46,7 +46,7 @@ export type Location =
 export type ShallowLocations =
 {
   count: number;
-  next: UrlString;
-  previous: UrlString;
+  next: UrlString | null;
+  previous: UrlString | null;
   results: Location[];
 }

@@ -3,6 +3,7 @@ import { createInterface, type Interface } from "readline";
 import { commandExit } from "./commands/exit.js";
 import { commandHelp } from "./commands/help.js";
 import { commandMap } from "./commands/map.js";
+import { commandMapb } from "./commands/mapb.js";
 import { PokeAPI } from "./pokeapi.js";
 
 
@@ -11,8 +12,8 @@ export type State =
   rl: Interface;
   commands: Record<string, CliCommand>;
   pokeApi: PokeAPI;
-  nextLocationsURL: string;
-  prevLocationsURL: string;
+  nextLocationsURL: string | null;
+  prevLocationsURL: string | null;
 };
 
 
@@ -53,9 +54,15 @@ export function initState()
     map:
     {
       name: "map",
-      description: "Fetches a map or something",
+      description: "Prints the next page of locations",
       callback: commandMap,
-    }
+    },
+    mapb:
+    {
+      name: "mapb",
+      description: "Prints the previous page of locations",
+      callback: commandMapb,
+    },
   };
 
   const state: State =
