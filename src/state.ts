@@ -5,6 +5,7 @@ import { commandHelp } from "./commands/help.js";
 import { commandMap } from "./commands/map.js";
 import { commandMapb } from "./commands/mapb.js";
 import { PokeAPI } from "./pokeapi.js";
+import { Cache } from "./pokecache.js";
 
 
 export type State =
@@ -14,6 +15,7 @@ export type State =
   pokeApi: PokeAPI;
   nextLocationsURL: string | null;
   prevLocationsURL: string | null;
+  cache: Cache;
 };
 
 
@@ -72,6 +74,7 @@ export function initState()
     pokeApi: new PokeAPI(),
     nextLocationsURL: "",
     prevLocationsURL: "",
+    cache: new Cache(3000),
   };
 
   return state;

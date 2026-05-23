@@ -3,9 +3,7 @@ import { State } from "../state.js";
 
 export async function commandMapb(state: State)
 {
-  let message = "";
-
-  let pageUrl = state.prevLocationsURL;
+  const pageUrl = state.prevLocationsURL;
 
   if (!pageUrl)
   {
@@ -13,8 +11,16 @@ export async function commandMapb(state: State)
     return;
   }
 
-  let shallowLocations = await state.pokeApi.fetchLocations(pageUrl);
+  const cached = state.cache.get(pageUrl || "");
+  const shallowLocations = cached ? cached.val : await state.pokeApi.fetchLocations(pageUrl);
+
+  if (!cached)
+  {
+    state.cache.add(pageUrl || "", shallowLocations);
+  }
   
+  let message = "";
+
   for (const location of shallowLocations.results)
     message += `${location.name}\n`;
 
