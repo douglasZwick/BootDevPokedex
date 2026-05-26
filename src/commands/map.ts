@@ -1,3 +1,4 @@
+import { ShallowLocations } from "src/pokeapi.js";
 import { State } from "../state.js";
 
 
@@ -5,7 +6,7 @@ export async function commandMap(state: State)
 {
   const pageUrl = state.nextLocationsURL || undefined;
   const cached = state.cache.get(pageUrl || "");
-  const shallowLocations = cached ? cached.val : await state.pokeApi.fetchLocations(pageUrl);
+  const shallowLocations: ShallowLocations = cached ?? await state.pokeApi.fetchLocations(pageUrl);
 
   if (!cached)
   {
