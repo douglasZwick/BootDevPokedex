@@ -28,7 +28,7 @@ export class PokeAPI
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
     const jsonLocation = await response.json();
-    return jsonLocation as Location;
+    return jsonLocation as LocationData;
   }
 }
 
@@ -36,10 +36,25 @@ export class PokeAPI
 type UrlString = string;
 
 
+export type LocationData =
+{
+  location: Location;
+  pokemon_encounters: PokemonData[];
+}
+
+
 export type Location =
 {
   name: string;
   url: UrlString;
+  names:
+  {
+    language:
+    {
+      name: string;
+    };
+    name: string;
+  }[];
 }
 
 
@@ -49,4 +64,10 @@ export type ShallowLocations =
   next: UrlString | null;
   previous: UrlString | null;
   results: Location[];
+}
+
+
+export type PokemonData =
+{
+  pokemon: { name: string; url: string; };
 }
