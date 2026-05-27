@@ -61,10 +61,12 @@ export class Cache
 
   #reap()
   {
+    if (this.#cache.size <= 0) return;
+
     const now = Date.now();
 
-    this.#cache = new Map(this.#cache.entries().filter(([k, val], i) =>
-      now - val.createdAt < this.#interval));
+    const entries = [...this.#cache.entries()];
+    this.#cache = new Map(entries.filter(([k, val], i) => now - val.createdAt < this.#interval));
   }
 
 
