@@ -38,8 +38,22 @@ type UrlString = string;
 
 export type LocationData =
 {
+  names: LocationName[];
   location: Location;
   pokemon_encounters: PokemonData[];
+}
+
+
+type LocationName =
+{
+  language: Language;
+  name: string;
+}
+
+
+type Language =
+{
+  name: string;
 }
 
 
@@ -47,14 +61,6 @@ export type Location =
 {
   name: string;
   url: UrlString;
-  names:
-  {
-    language:
-    {
-      name: string;
-    };
-    name: string;
-  }[];
 }
 
 

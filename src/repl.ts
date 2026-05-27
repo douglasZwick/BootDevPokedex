@@ -31,16 +31,20 @@ export async function handleLine(state: State, input: string)
     return;
   }
 
+  const args = words.slice(1);
+
   try
   {
-    await command.callback(state);
+    await command.callback(state, ...args);
   }
   catch (err)
   {
+    const msg = `while handling command ${command.name} with args [${args}]`;
+
     if (err instanceof Error)
-      console.error(`Error ${err.name} while handling command ${command.name}: ${err.message}`);
+      console.error(`Error ${err.name} ${msg}: ${err.message}`);
     else
-      console.error(`Unknown error while handling command ${command.name}: ${err}`);
+      console.error(`Unknown error ${msg}: ${err}`);
   }
 
   state.rl.prompt();

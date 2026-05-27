@@ -6,6 +6,7 @@ import { commandMap } from "./commands/map.js";
 import { commandMapb } from "./commands/mapb.js";
 import { PokeAPI } from "./pokeapi.js";
 import { Cache } from "./pokecache.js";
+import { commandExplore } from "./commands/explore.js";
 
 
 export type State =
@@ -19,11 +20,13 @@ export type State =
 };
 
 
+type CommandCallback = (state: State, ...args: string[]) => Promise<void>;
+
 export type CliCommand =
 {
   name: string;
   description: string;
-  callback: (state: State) => Promise<void>;
+  callback: CommandCallback;
 };
 
 
@@ -65,6 +68,12 @@ export function initState()
       description: "Prints the previous page of locations",
       callback: commandMapb,
     },
+    explore:
+    {
+      name: "explore",
+      description: "Takes one string argument: prints a list of pokémon who can be found in the given location",
+      callback: commandExplore,
+    }
   };
 
   const state: State =
