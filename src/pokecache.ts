@@ -1,3 +1,6 @@
+import { styleText } from "node:util";
+
+
 type TimeStamp = number;
 
 
@@ -34,26 +37,30 @@ export class Cache
     }
 
     const offset = Date.now() - this.#startTime;
-    console.log(`*** Setting key [ ${key} ] with value [ ${val} ] | Time offset: ${offset}`);
+    const message = `*** Setting key [ ${key} ] with value [ ${val} ] | Time offset: ${offset}`;
+    const styled = styleText("gray", styleText("italic", message));
+    console.log(styled);
 
     this.#cache.set(key, entry);
   }
 
 
-  get<T>(key: string)
+  get<T>(key: string): T | undefined
   {
     const offset = Date.now() - this.#startTime;
-    console.log(`*** Getting key [ ${key} ] | Time offset: ${offset}`);
+    const message = `*** Getting key [ ${key} ] | Time offset: ${offset}`;
+    const styled = styleText("gray", styleText("italic", message));
+    console.log(styled);
 
     const entry = this.#cache.get(key);
 
     if (entry)
     {
-      console.log("***** Cache hit");
+      console.log(styleText("gray", styleText("italic", styleText("bold", "***** Cache hit"))));
       return entry.val;
     }
     
-    console.log("***** Cache miss");
+    console.log(styleText("gray", styleText("italic", styleText("bold", "***** Cache miss"))));
     return undefined;
     // return entry ? entry.val : undefined;
   }
@@ -67,6 +74,7 @@ export class Cache
 
     const entries = [...this.#cache.entries()];
     this.#cache = new Map(entries.filter(([k, val], i) => now - val.createdAt < this.#interval));
+    this.#startTime = now;
   }
 
 

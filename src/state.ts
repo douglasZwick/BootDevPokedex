@@ -76,14 +76,16 @@ export function initState()
     }
   };
 
+  const cache = new Cache(3000);
+
   const state: State =
   {
     rl: rl,
     commands: commands,
-    pokeApi: new PokeAPI(),
+    pokeApi: new PokeAPI(cache),
     nextLocationsURL: "",
     prevLocationsURL: "",
-    cache: new Cache(3000),
+    cache: cache,
   };
 
   return state;

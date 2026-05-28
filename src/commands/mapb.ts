@@ -1,4 +1,3 @@
-import { ShallowLocations } from "src/pokeapi.js";
 import { State } from "../state.js";
 
 
@@ -12,13 +11,7 @@ export async function commandMapb(state: State)
     return;
   }
 
-  const cached = state.cache.get(pageUrl || "");
-  const shallowLocations: ShallowLocations = cached ?? await state.pokeApi.fetchLocations(pageUrl);
-
-  if (!cached)
-  {
-    state.cache.add(pageUrl || "", shallowLocations);
-  }
+  const shallowLocations = await state.pokeApi.fetchLocations(pageUrl);
   
   let message = "";
 

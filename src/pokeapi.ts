@@ -1,34 +1,59 @@
+import { Cache } from "./pokecache.js";
+
+
 export class PokeAPI
 {
+  private cache: Cache;
   private static readonly baseUrl = "https://pokeapi.co/api/v2";
 
 
-  constructor() {}
-
-
-  async fetchLocations(pageUrl?: string)//: Promise<ShallowLocations>
+  constructor(cache: Cache)
   {
-    const sectionUrl = "/location-area/";
-    const fullUrl = pageUrl || `${PokeAPI.baseUrl}${sectionUrl}`;
-    
-    const response = await fetch(fullUrl);
-    if (!response.ok) throw new Error(`Response status: ${response.status}`);
-
-    const jsonLocations = await response.json();
-    return jsonLocations as ShallowLocations;
+    this.cache = cache;
   }
 
 
-  async fetchLocation(locationName: string)//: Promise<Location>
+  async fetchLocations(pageUrl?: string)
+  {
+    const sectionUrl = "/location-area/";
+    const fullUrl = pageUrl || `${PokeAPI.baseUrl}${sectionUrl}`
+
+    return this.fetchHelper<ShallowLocations>(fullUrl);
+  }
+
+
+  async fetchLocation(locationName: string)
   {
     const sectionUrl = "/location-area/";
     const fullUrl = `${PokeAPI.baseUrl}${sectionUrl}${locationName}`;
+    
+    return this.fetchHelper<LocationData>(fullUrl);
+  }
 
-    const response = await fetch(fullUrl);
+
+  async fetchPokemon(pokemonName: string)
+  {
+    const sectionUrl = "/pokemon/";
+    const fullUrl = `${PokeAPI.baseUrl}${sectionUrl}${pokemonName}`;
+
+    return this.fetchHelper<Pokemon>(fullUrl);
+  }
+
+
+  async fetchHelper<T>(url: string)
+  {
+    const cached = this.cache.get<T>(url);
+
+    if (cached !== undefined)
+      return cached;
+
+    const response = await fetch(url);
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
-    const jsonLocation = await response.json();
-    return jsonLocation as LocationData;
+    const data: T = await response.json();
+    this.cache.add(url, data);
+
+    return data;
   }
 }
 
@@ -38,13 +63,13 @@ type UrlString = string;
 
 export type LocationData =
 {
-  names: LocationName[];
+  names: Name[];
   location: Location;
-  pokemon_encounters: PokemonData[];
+  pokemon_encounters: PokemonEncounter[];
 }
 
 
-type LocationName =
+type Name =
 {
   language: Language;
   name: string;
@@ -73,7 +98,21 @@ export type ShallowLocations =
 }
 
 
-export type PokemonData =
+export type PokemonEncounter =
 {
   pokemon: { name: string; url: string; };
+}
+
+
+export type Pokemon =
+{
+  name: string;
+  species: { name: string, url: UrlString };
+}
+
+
+export type Species =
+{
+  capture_rate: number;
+  names: Name[];
 }
