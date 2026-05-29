@@ -1,5 +1,5 @@
-import { styleText } from "node:util";
-import { State } from "src/state.js";
+import { Style } from "../style.js";
+import { State } from "../state.js";
 
 
 export async function commandExplore(state: State, locationName: string)
@@ -8,7 +8,7 @@ export async function commandExplore(state: State, locationName: string)
   
   const properName = locationData.names.find(item => item.language.name === "en")?.name
     ?? locationName;
-  const styled = styleText("bold", `Exploring ${styleText("yellow", properName)}...`);
+  const styled = Style.Go("bold", `Exploring ${Style.Go("yellow", properName)}...`);
   let message = `${styled}\nFound Pokémon:\n`;
 
   for (const encounter of locationData.pokemon_encounters)

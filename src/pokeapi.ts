@@ -40,6 +40,15 @@ export class PokeAPI
   }
 
 
+  async fetchSpecies(pokemonName: string)
+  {
+    const sectionUrl = "/pokemon-species/";
+    const fullUrl = `${PokeAPI.baseUrl}${sectionUrl}${pokemonName}`
+
+    return this.fetchHelper<Species>(fullUrl);
+  }
+
+
   async fetchHelper<T>(url: string)
   {
     const cached = this.cache.get<T>(url);

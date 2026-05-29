@@ -1,9 +1,10 @@
-import type { State } from "src/state.js";
+import type { State } from "../state.js";
+import { Style } from "../style.js";
 
 
 export async function commandHelp(state: State)
 {
-  let message = "Welcome to the Pokedex!\nUsage:\n\n"; 
+  let message = Style.Go("bold", Style.Go("yellow", "Welcome to the Pokedex!\nUsage:\n\n")); 
 
   for (const key in state.commands)
   {

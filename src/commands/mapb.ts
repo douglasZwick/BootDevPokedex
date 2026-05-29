@@ -1,3 +1,4 @@
+import { Style } from "../style.js";
 import { State } from "../state.js";
 
 
@@ -7,7 +8,7 @@ export async function commandMapb(state: State)
 
   if (!pageUrl)
   {
-    console.log("You're on the first page.");
+    console.log(Style.Go("italic", "You're on the first page."));
     return;
   }
 

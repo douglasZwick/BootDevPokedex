@@ -1,4 +1,4 @@
-import { styleText } from "node:util";
+import { Style } from "./style.js";
 
 
 type TimeStamp = number;
@@ -17,6 +17,7 @@ export class Cache
   #reapIntervalId: NodeJS.Timeout | undefined = undefined;
   #interval: number;
   #startTime: TimeStamp;
+  #useLogging = false;
 
 
   constructor(interval: number)
@@ -25,6 +26,13 @@ export class Cache
     this.#startTime = Date.now();
 
     this.#startReapLoop();
+  }
+
+
+  #log(msg: any)
+  {
+    if (!this.#useLogging) return;
+    console.log(msg);
   }
 
 
@@ -38,8 +46,8 @@ export class Cache
 
     const offset = Date.now() - this.#startTime;
     const message = `*** Setting key [ ${key} ] with value [ ${val} ] | Time offset: ${offset}`;
-    const styled = styleText("gray", styleText("italic", message));
-    console.log(styled);
+    const styled = Style.Go("gray", Style.Go("italic", message));
+    this.#log(styled);
 
     this.#cache.set(key, entry);
   }
@@ -49,18 +57,18 @@ export class Cache
   {
     const offset = Date.now() - this.#startTime;
     const message = `*** Getting key [ ${key} ] | Time offset: ${offset}`;
-    const styled = styleText("gray", styleText("italic", message));
-    console.log(styled);
+    const styled = Style.Go("gray", Style.Go("italic", message));
+    this.#log(styled);
 
     const entry = this.#cache.get(key);
 
     if (entry)
     {
-      console.log(styleText("gray", styleText("italic", styleText("bold", "***** Cache hit"))));
+      this.#log(Style.Go("gray", Style.Go("italic", Style.Go("bold", "***** Cache hit"))));
       return entry.val;
     }
     
-    console.log(styleText("gray", styleText("italic", styleText("bold", "***** Cache miss"))));
+    this.#log(Style.Go("gray", Style.Go("italic", Style.Go("bold", "***** Cache miss"))));
     return undefined;
     // return entry ? entry.val : undefined;
   }

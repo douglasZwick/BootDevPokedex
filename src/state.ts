@@ -1,12 +1,13 @@
 import { createInterface, type Interface } from "readline";
 
+import { PokeAPI, Pokemon } from "./pokeapi.js";
+import { Cache } from "./pokecache.js";
 import { commandExit } from "./commands/exit.js";
 import { commandHelp } from "./commands/help.js";
 import { commandMap } from "./commands/map.js";
 import { commandMapb } from "./commands/mapb.js";
-import { PokeAPI } from "./pokeapi.js";
-import { Cache } from "./pokecache.js";
 import { commandExplore } from "./commands/explore.js";
+import { commandCatch } from "./commands/catch.js";
 
 
 export type State =
@@ -17,6 +18,7 @@ export type State =
   nextLocationsURL: string | null;
   prevLocationsURL: string | null;
   cache: Cache;
+  pokedex: Record<string, Pokemon>;
 };
 
 
@@ -73,7 +75,13 @@ export function initState()
       name: "explore",
       description: "Takes one string argument: prints a list of pokémon who can be found in the given location",
       callback: commandExplore,
-    }
+    },
+    catch:
+    {
+      name: "catch",
+      description: "Takes on estring argument: attempts to catch the specified pokémon",
+      callback: commandCatch,
+    },
   };
 
   const cache = new Cache(3000);
@@ -86,6 +94,7 @@ export function initState()
     nextLocationsURL: "",
     prevLocationsURL: "",
     cache: cache,
+    pokedex: {},
   };
 
   return state;
